@@ -10,9 +10,6 @@ import java.io.InputStreamReader;
 
 public class FilePratice {
 	public static void main(String[] args) throws IOException {
-                ;
-		String name = "C:\\Users\\Administrator\\Desktop\\";
-		String newName = "C:\\Users\\Administrator\\Desktop\\";
 		StringBuffer choice = new StringBuffer();
 		choice.append("请选择一下工作方式的编号，像是1,2,3" + "\n");
 		choice.append("1.从控制台读取，写入到文件中，控制台输入的内容最后以end结束" + "\n");
@@ -26,23 +23,15 @@ public class FilePratice {
 			number = reader.readLine();
 			if (number.equals("1")) {
 				// 从控制台中读取，写入到文件中
-				System.out.println("请输入要写入的文件名");
-				newName += getNameByConsole();
-				readFromConsoleAndWriteToFile(newName + ".txt");
+				readFromConsoleAndWriteToFile();
 				break;
 			} else if (number.equals("2")) {
 				// 从文件中读取，写入到控制台中
-				System.out.println("请输入要读取的文件名");
-				name += getNameByConsole();
-				readFromFileAndWriteToConsole(name + ".txt");
+				readFromFileAndWriteToConsole();
 				break;
 			} else if (number.equals("3")) {
 				// 从文件中读取，写入到文件中
-				System.out.println("请输入要读取的文件名");
-				name += getNameByConsole();
-				System.out.println("请输入要写入的文件名");
-				newName += getNameByConsole();
-				readFromFileAndWriteToFile(name + ".txt", newName + ".txt");
+				readFromFileAndWriteToFile();
 				break;
 			} else {
 				System.out.println("请输入编号");
@@ -52,10 +41,21 @@ public class FilePratice {
 		reader.close();
 	}
 
-	private static void readFromFileAndWriteToFile(String name, String newName)
-			throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(name));
-		BufferedWriter writer = new BufferedWriter(new FileWriter(newName));
+	private static void readFromFileAndWriteToFile() throws IOException {
+		System.out.println("请输入要读取的文件名");
+		StringBuffer name = new StringBuffer(
+				"C:\\Users\\Administrator\\Desktop\\");
+		name.append(getNameByConsole());
+		name.append(".txt");
+		BufferedReader reader = new BufferedReader(new FileReader(
+				name.toString()));
+		System.out.println("请输入要写入的文件名");
+		StringBuffer newName = new StringBuffer(
+				"C:\\Users\\Administrator\\Desktop\\");
+		newName.append(getNameByConsole());
+		newName.append(".txt");
+		BufferedWriter writer = new BufferedWriter(new FileWriter(
+				newName.toString()));
 		String context = reader.readLine();
 		while (context != null) {
 			writer.write(context);
@@ -65,25 +65,33 @@ public class FilePratice {
 		}
 		writer.close();
 		reader.close();
-		readFromFileAndWriteToConsole(newName);
+		readFromFileAndWriteToConsole();
 	}
 
-	private static void readFromConsoleAndWriteToFile(String name)
-			throws IOException {
+	private static void readFromConsoleAndWriteToFile() throws IOException {
+		StringBuffer name = new StringBuffer(
+				"C:\\Users\\Administrator\\Desktop\\");
+		System.out.println("请输入要写入的文件名");
+		name.append(getNameByConsole());
+		name.append(".txt");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
 				System.in));
 		System.out.println("请输入内容");
 		String context = reader.readLine();
-		BufferedWriter writer = new BufferedWriter(new FileWriter(name));
-		while (context != null) {
+		BufferedWriter writer = new BufferedWriter(new FileWriter(
+				name.toString()));
+		while (true) {
 			writer.write(context);
 			writer.newLine();
 			writer.flush();
 			context = reader.readLine();
+			if (context.equals("end")) {
+				break;
+			}
 		}
 		writer.close();
+		readFromFileAndWriteToConsole();
 		reader.close();
-		readFromFileAndWriteToConsole(name);
 	}
 
 	private static String getNameByConsole() throws IOException {
@@ -92,9 +100,14 @@ public class FilePratice {
 		return reader.readLine();
 	}
 
-	private static void readFromFileAndWriteToConsole(String name)
-			throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(name));
+	private static void readFromFileAndWriteToConsole() throws IOException {
+		System.out.println("请输入要读取的文件名");
+		StringBuffer name = new StringBuffer(
+				"C:\\Users\\Administrator\\Desktop\\");
+		name.append(getNameByConsole());
+		name.append(".txt");
+		BufferedReader reader = new BufferedReader(new FileReader(
+				name.toString()));
 		String context = reader.readLine();
 		while (context != null) {
 			System.out.println(context);
