@@ -1,0 +1,104 @@
+package pratice;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class FilePratice {
+	public static void main(String[] args) throws IOException {
+		String name = "C:\\Users\\Administrator\\Desktop\\";
+		String newName = "C:\\Users\\Administrator\\Desktop\\";
+		StringBuffer choice = new StringBuffer();
+		choice.append("请选择一下工作方式的编号，像是1,2,3" + "\n");
+		choice.append("1.从控制台读取，写入到文件中，控制台输入的内容最后以end结束" + "\n");
+		choice.append("2.从文件读取，写入到控制台中" + "\n");
+		choice.append("3.从文件中读取，写入到文件中" + "\n");
+		System.out.println(choice.toString());
+		BufferedReader reader = new BufferedReader(new InputStreamReader(
+				System.in));
+		String number = null;
+		while (true) {
+			number = reader.readLine();
+			if (number.equals("1")) {
+				// 从控制台中读取，写入到文件中
+				System.out.println("请输入要写入的文件名");
+				newName += getNameByConsole();
+				readFromConsoleAndWriteToFile(newName + ".txt");
+				break;
+			} else if (number.equals("2")) {
+				// 从文件中读取，写入到控制台中
+				System.out.println("请输入要读取的文件名");
+				name += getNameByConsole();
+				readFromFileAndWriteToConsole(name + ".txt");
+				break;
+			} else if (number.equals("3")) {
+				// 从文件中读取，写入到文件中
+				System.out.println("请输入要读取的文件名");
+				name += getNameByConsole();
+				System.out.println("请输入要写入的文件名");
+				newName += getNameByConsole();
+				readFromFileAndWriteToFile(name + ".txt", newName + ".txt");
+				break;
+			} else {
+				System.out.println("请输入编号");
+				continue;
+			}
+		}
+		reader.close();
+	}
+
+	private static void readFromFileAndWriteToFile(String name, String newName)
+			throws IOException {
+		BufferedReader reader = new BufferedReader(new FileReader(name));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(newName));
+		String context = reader.readLine();
+		while (context != null) {
+			writer.write(context);
+			writer.newLine();
+			writer.flush();
+			context = reader.readLine();
+		}
+		writer.close();
+		reader.close();
+		readFromFileAndWriteToConsole(newName);
+	}
+
+	private static void readFromConsoleAndWriteToFile(String name)
+			throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(
+				System.in));
+		System.out.println("请输入内容");
+		String context = reader.readLine();
+		BufferedWriter writer = new BufferedWriter(new FileWriter(name));
+		while (context != null) {
+			writer.write(context);
+			writer.newLine();
+			writer.flush();
+			context = reader.readLine();
+		}
+		writer.close();
+		reader.close();
+		readFromFileAndWriteToConsole(name);
+	}
+
+	private static String getNameByConsole() throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(
+				System.in));
+		return reader.readLine();
+	}
+
+	private static void readFromFileAndWriteToConsole(String name)
+			throws IOException {
+		BufferedReader reader = new BufferedReader(new FileReader(name));
+		String context = reader.readLine();
+		while (context != null) {
+			System.out.println(context);
+			context = reader.readLine();
+		}
+		reader.close();
+	}
+}
